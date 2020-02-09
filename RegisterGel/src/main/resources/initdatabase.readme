@@ -1,0 +1,6 @@
+ create database registerGel CHARACTER SET utf8 COLLATE utf8_general_ci;
+ create user 'registerGel' identified by 'registerGel';
+ grant usage on *.* to 'registerGel'@'%' identified by 'registerGel';
+ grant all privileges on `registerGel`.* to `registerGel`@'%';
+ flush privileges;
+ 

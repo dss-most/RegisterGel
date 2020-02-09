@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>กิจกรรมทำเจลล้างมือ</title>
+
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  
+  <link th:href="@{/webjars/fontawesome/css/all.min.css}" href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link th:href="@{/webjars/simple-line-icons/css/simple-line-icons.css}"  rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+  <!-- Plugin CSS -->
+  <link th:href="@{/css/device-mockups/device-mockups.min.css}" rel="stylesheet" href="device-mockups/device-mockups.min.css">
+
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/new-age.min.css}" href="css/new-age.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<script id="dataTemplate" type="text/x-handlebars-template">
+<table class="table table-bordered table-hover">
+<thead>
+<tr>
+	<td style="text-align:center;"><b>ชื่อ-นามสุกล</b></td>
+	<td style="width:40px;text-align:center;"><b>email</b></td>	
+	<td style="width:60px;text-align:center;"><b>ตำแหน่ง</b></td>
+	<td style="width:60px;text-align:center;"><b>ที่ทำงาน</b></td>
+
+</tr>
+</thead>
+<tbody>
+{{#each content}}
+	<tr data-index="{{@index}}" data-id="{{id}}">
+		<td> 
+			{{firstName}} {{lastName}}
+		</td>
+		<td>{{email}}</td>
+		<td>{{occupation}}</td>
+		<td>{{workplace}}</td>
+	</tr>
+{{/each}}
+</tbody>
+</script>
+
+<script id="formTemplate" type="text/x-handlebars-template">
+					<form id="registerationForm">
+						<div class="form-group row">
+							<label for="inputFirstName" class="col-sm-2 col-form-label">ชื่อ</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control txtInput" id="inputFirstName" data-field="firstName">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputLastName" class="col-sm-2 col-form-label">นามสกุล</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control txtInput" id="inputLastName" data-field="lastName">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputEmail" class="col-sm-2 col-form-label">email</label>
+							<div class="col-sm-10">
+								<input type="email" class="form-control txtInput" id="inputEmail" data-field="email">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputPhone" class="col-sm-2 col-form-label">เบอร์โทรศัพท์</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control txtInput" id="inputPhone" data-field="phone">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputOccupation" class="col-sm-2 col-form-label">อาชีพ</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control txtInput" id="inputOccupation" data-field="occupation">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputWorkplace" class="col-sm-2 col-form-label">สถานที่ทำงาน</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control txtInput" id="inputWorkplace" data-field="workplace">
+							</div>
+						</div>
+					</form>
+
+</script>
+
+
+	<!-- Modal for Registering -->
+	<div class="modal fade" id="registrationModal" data-backdrop="static"
+		tabindex="-1" role="dialog" aria-labelledby="registrationModalLabel"
+		aria-hidden="true">
+
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="registrationModalLabel">ข้อมูลการลงทะเบียน</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="registrationModalBody">
+				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">ยกเลิก</button>
+					<button type="button" class="btn btn-primary" id="saveBtn">บันทึกการลงทะเบียน</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">กิจกรรมเจลล้างมือทำเอง</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#registerSection">ลงทะเบียน</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#contactSection">ติดต่อสอบถาม</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="masthead">
+    <div class="container h-100">
+      <div class="row h-100">
+        <div class="col-lg-7 my-auto">
+          <div class="header-content mx-auto">
+            <h1 class="mb-5">เจลล้างมือทำเอง ไม่ยาก</h1>
+            <a href="#registerSection" class="btn btn-outline btn-xl js-scroll-trigger">ลงทะเบียน!</a>
+          </div>
+        </div>
+        <div class="col-lg-5 my-auto">
+          <div class="device-container">
+            <div class="device-mockup iphone6_plus portrait white">
+              <div class="device">
+                <div class="screen">
+                  <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
+                  <img src="img/demo-screen-1.jpg" class="img-fluid" alt="">
+                </div>
+                <div class="button">
+                  <!-- You can hook the "home button" to some JavaScript events or just remove it -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="download bg-primary text-center" id="registerSection">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <h2 class="section-heading">ลงทะเบียนเข้าร่วมกิจกรรม</h2>
+          
+          <!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary viewForm" data-round="1">
+		  ลงทะเบียนรอบที่ 1
+		</button> <button type="button" class="btn btn-primary viewData" data-round="1">ดูข้อมูลการลงทะเบียนรอบที่ 1</button> <br/> <br/>
+		
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary viewForm" data-round="2">
+		  ลงทะเบียนรอบที่ 2
+		</button> <button type="button" class="btn btn-primary viewData" data-round="2">ดูข้อมูลการลงทะเบียนรอบที่ 2</button> <br/> <br/>
+		
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary viewForm" data-round="3">
+		  ลงทะเบียนรอบที่ 3
+		</button> <button type="button" class="btn btn-primary viewData" data-round="3">ดูข้อมูลการลงทะเบียนรอบที่ 3</button> <br/> <br/>
+		
+		<button type="button" class="btn btn-primary viewForm" data-round="4">
+		  ลงทะเบียนรอบที่ 4
+		</button> <button type="button" class="btn btn-primary viewData" data-round="4">ดูข้อมูลการลงทะเบียนรอบที่ 4</button> <br/> <br/>
+		
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary viewForm" data-round="5">
+		  ลงทะเบียนรอบที่ 5
+		</button> <button type="button" class="btn btn-primary viewData" data-round="5">ดูข้อมูลการลงทะเบียนรอบที่ 5</button> <br/> <br/>
+		
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary viewForm" data-round="6">
+		  ลงทะเบียนรอบที่ 6
+		</button> <button type="button" class="btn btn-primary viewData" data-round="6">ดูข้อมูลการลงทะเบียนรอบที่ 6</button> <br/> <br/>
+		
+	<!-- Modal for Registering -->
+	<div class="modal fade" id="dataModal" data-backdrop="static"
+		tabindex="-1" role="dialog" aria-labelledby="registrationModalLabel"
+		aria-hidden="true">
+
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="dataModalLabel">ข้อมูลการลงทะเบียน</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="dataModalBody">
+				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">ปิดหน้าต่าง</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>		
+		
+		
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+
+  <section class="cta" id="contactSection">
+    <div class="cta-content">
+      <div class="container">
+        <h2>ติดต่อข้อมูลเพิ่มเติม<br>0-2201-7000</h2>
+      </div>
+    </div>
+    <div class="overlay"></div>
+  </section>
+
+  <section class="contact bg-primary" id="contact">
+    <div class="container">
+      <h2>กรมวิทยาศาสตร์บริการ</h2>
+      <ul class="list-inline list-social">
+        <li class="list-inline-item social-twitter">
+          <a href="#">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </li>
+        <li class="list-inline-item social-facebook">
+          <a href="#">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </li>
+        <li class="list-inline-item social-google-plus">
+          <a href="#">
+            <i class="fab fa-google-plus-g"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; Your Website 2019. All Rights Reserved.</p>
+      <ul class="list-inline">
+        <li class="list-inline-item">
+          <a href="#">Privacy</a>
+        </li>
+        <li class="list-inline-item">
+          <a href="#">Terms</a>
+        </li>
+        <li class="list-inline-item">
+          <a href="#">FAQ</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/webjars/jquery/jquery.min.js}" src="vendor/jquery/jquery.min.js"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}" src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script th:src="@{/webjars/jquery-easing/jquery.easing.min.js}" src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script th:src="@{/webjars/underscore/underscore-min.js}" src="vendor/underscore/underscore-min.js"></script>
+  <script th:src="@{/webjars/backbonejs/backbone-min.js}" src="vendor/backbonejs/backbone-min.js"></script>
+  
+    <script th:src="@{/webjars/handlebars/handlebars.min.js}" src="vendor/backbonejs/backbone-min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script th:src="@{/js/new-age.min.js}" src="js/new-age.min.js"></script>
+  
+  <script th:src="@{/js/backbone-model.js}" src="js/new-age.min.js"></script>
+  <script th:src="@{/js/index-script.js}" src="js/new-age.min.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+//<!--
+
+var appRouter;
+
+$( document ).ready(function() {
+	
+	appRouter = new AppRouter();
+	Backbone.history.start();
+
+});
+
+
+//-->
+</script>
+
+
+
+
+
+
+</body>
+
+</html>
